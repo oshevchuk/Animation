@@ -1,0 +1,76 @@
+<!doctype HTML>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8" />
+    <title>Change BG image color</title>
+</head>
+<body>
+
+
+
+<div id="mugBG">BG IMAGE</div>
+<style type="text/css">#mugBG{width:200px; height:213px; line-height:213px; background:url(items/item1/p3.png) no-repeat 0 0; text-align:center; }</style>
+
+<img src="items/item1/p1.png" id="mug" alt="items/item1/p1.png" width="200" height="213">
+
+<input type="text" id="color" value="6491ee" />
+<input type="button" value="image 1" onclick="changeColor(document.getElementById('mug'), document.getElementById('mugBG'))">
+
+<script type="text/javascript">
+    var canvas = document.createElement("canvas"),
+            ctx = canvas.getContext("2d"),
+            originalPixels = null,
+            currentPixels = null;
+
+    function HexToRGB(Hex){
+
+        var Long = parseInt(Hex.replace(/^#/, ""), 16);
+        return {
+            R: (Long >>> 16) & 0xff,
+            G: (Long >>> 8) & 0xff,
+            B: Long & 0xff
+        };
+    }
+
+    function changeColor(o,bgImage){
+
+
+        o.src = "";
+        o.src = o.alt;
+
+        getPixels(o);
+
+        if(!originalPixels) return; // Check if image has loaded
+        var newColor = HexToRGB(document.getElementById("color").value);
+        for(var I = 0, L = originalPixels.data.length; I < L; I += 4){
+
+            if(currentPixels.data[I + 3] > 0){
+                currentPixels.data[I] = originalPixels.data[I] / 255 * newColor.R;
+                currentPixels.data[I + 1] = originalPixels.data[I + 1] / 255 * newColor.G;
+                currentPixels.data[I + 2] = originalPixels.data[I + 2] / 255 * newColor.B;
+            }
+        }
+
+        ctx.putImageData(currentPixels, 0, 0);
+        o.src = canvas.toDataURL("image/png");
+        bgImage.style.background = 'url('+o.src+')';
+    }
+
+
+
+
+    function getPixels(img){
+
+        canvas.width = img.width;
+        canvas.height = img.height;
+
+        ctx.drawImage(img, 0, 0, img.naturalWidth, img.naturalHeight, 0, 0, img.width, img.height);
+        originalPixels = ctx.getImageData(0, 0, img.width, img.height);
+        currentPixels = ctx.getImageData(0, 0, img.width, img.height);
+
+        //img.onload = null;
+    }
+
+</script>
+</body>
+</html>

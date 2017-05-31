@@ -1,0 +1,148 @@
+body{
+  margin: 0;
+}
+
+.item{
+  width: 230px;
+  height: 320px;
+  margin: auto;
+  position: relative;
+  margin-top: 10px;
+
+  background-color: lavender;
+
+  border: 1px solid black;
+
+  //*{
+  //  position: absolute;
+  //}
+
+  .cont{
+    position: absolute;
+
+    img{
+      position: absolute;
+    }
+
+    img.main {
+      z-index:2;
+    }
+
+    img:hover{
+      -webkit-filter: drop-shadow(0px 0px 15px rgba(100,100,100,0.8));
+      filter: url(#drop-shadow);
+      -ms-filter: "progid:DXImageTransform.Microsoft.Dropshadow(OffX=12, OffY=12, Color='red')";
+      filter: "progid:DXImageTransform.Microsoft.Dropshadow(OffX=12, OffY=12, Color='red')";
+    }
+
+    //img.main:hover ~ img.glow {
+    //  opacity:1;
+    //}
+
+    img.glow {
+      z-index:1;
+      transform: scale(1.01);
+      //-webkit-transform: scale(1.01) translate(-50%, -50%);
+      filter: brightness(0) invert(1) blur(5px);
+      -webkit-filter: brightness(0) invert(1) blur(5px);
+
+      //-webkit-filter: drop-shadow(12px 12px 25px rgba(0,0,0,0.5));
+
+      opacity:0;
+    }
+  }
+
+  .p1{
+    left: 50px;
+    top: 15px;
+  }
+
+  .p2{
+    top:190px;
+    left:50px;
+    z-index: 4;
+    //-webkit-animation: pulse-menu 1.5s infinite;
+
+  }
+
+  .p3{
+    top:145px;
+    left:50px;
+    z-index: 3;
+  }
+
+  .p4{
+    top: 182px;
+    left: 182px;
+    z-index: 4;
+  }
+
+  .p5{
+    top: 192px;
+    left: 30px;
+  }
+}
+
+
+
+.animup{
+  -webkit-animation: pulse 1.0s ;
+}
+.anim_rot{
+  -webkit-animation: pulse-rotate 1.0s ;
+}
+
+@-webkit-keyframes pulse {
+  0% {
+    top: 0px;
+    //transform: scale(.9);
+  }
+  25% {
+    top: -5px;
+    //transform: scale(.9);
+  }
+  70% {
+    //transform: scale(0.1);
+    top: 10px;
+  }
+  100% {
+    //transform: scale(.9);
+  top:0px;
+  }
+}
+
+@-webkit-keyframes pulse-rotate {
+  0% {
+    //top: 0px;
+    //position: relative;
+    transform-origin: -115px -160px;
+    transform: rotate(-10deg);
+    //position: absolute;
+    transform-origin: 115px 160px;
+
+    //img{
+    //  transform: rotate(-10deg);
+    //}
+  }
+  25% {
+    //top: -5px;
+    //transform: scale(.9);
+
+  }
+  70% {
+    //transform: scale(0.1);
+    //top: 10px;
+  }
+  100% {
+    //transform: scale(.9);
+  //top:0px;
+  //  position: relative;
+    transform-origin: -115px -160px;
+    transform: rotate(0deg);
+    //position: absolute;
+    transform-origin: 115px 160px;
+    //.p3{
+    //  transform: rotate(0deg);
+    //}
+  }
+}

@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+<div class="item">
+    <div class="p1 cont">
+        <img src="items/item1/p1.png" alt="" class="main">
+        <!--<img src="items/item1/p1.png" alt="" class="glow">-->
+    </div>
+    <div class="p2 cont">
+        <img src="items/item1/p2.png" alt="" class="main">
+        <!--<img src="items/item1/p2.png" alt="" class="glow">-->
+    </div>
+    <div class="p3 cont">
+        <img src="items/item1/p3.png" alt="" class="main">
+        <!--<img src="items/item1/p3.png" alt="" class="glow">-->
+    </div>
+    <div class="p4 cont">
+        <img src="items/item1/p4.png" alt="" class="main">
+        <!--<img src="items/item1/p4.png" alt="" class="glow">-->
+    </div>
+    <div class="p5 cont">
+        <img src="items/item1/p5.png" alt="" class="main">
+        <!--<img src="items/item1/p5.png" alt="" class="glow">-->
+    </div>
+
+
+    <!--<img src="items/item1/p2.png" alt="" class="p2">-->
+    <!--<img src="items/item1/p3.png" alt="" class="p3">-->
+    <!--<img src="items/item1/p4.png" alt="" class="p4">-->
+    <!--<img src="items/item1/p5.png" alt="" class="p5">-->
+<!---->
+</div>
+
+
+<svg height="0" xmlns="http://www.w3.org/2000/svg">
+    <filter id="drop-shadow">
+        <feGaussianBlur in="SourceAlpha" stdDeviation="4"/>
+        <feOffset dx="2" dy="2" result="offsetblur"/>
+        <feFlood flood-color="green"/>
+        <feComposite in2="offsetblur" operator="in"/>
+        <feMerge>
+            <feMergeNode/>
+            <feMergeNode in="SourceGraphic"/>
+        </feMerge>
+    </filter>
+</svg>
+
+
+
+<script
+        src="https://code.jquery.com/jquery-3.2.1.min.js"
+        integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4="
+        crossorigin="anonymous"></script>
+<script src="5.js"></script>
+</body>
+</html>
