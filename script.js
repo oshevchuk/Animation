@@ -8,6 +8,8 @@ var context = canvas.getContext('2d');
 var canvas_mask = document.getElementById('mask');
 var context_mask = canvas_mask.getContext('2d');
 
+var freez = false;
+
 canvas.addEventListener('mousemove', function (e) {
     var mousePos = getMousePos(canvas, e);
     // writeMessage(canvas, 'pos: '+mousePos.x+":"+mousePos.y);
@@ -59,7 +61,10 @@ function pic(event) {
                 console.log("animated");
                 anim = true;
                 // render_tick(10, 60, ['p1', 'p3', 'p2', 'p4'], item.animation);
-                render_tick(10, 60, item.depends, item.animation);
+                if (item.img == 'p6' || item.img == 'p7')
+                    animate_bone(item);
+                else
+                    render_tick(10, item.time, item.depends, item.animation, '','');
             }
         }
     });
@@ -72,17 +77,82 @@ function pic(event) {
         tick();
 }
 
+
+//-----------------------------------------------------------------
+//animate bone before Root animation
+//-----------------------------------------------------------------
+function animate_bone(element) {
+    console.log("----" + element);
+
+    var localFrames = 12;
+
+    function anim() {
+        localFrames--;
+        var angle = (-localFrames + 20) * Math.PI / 180;
+
+
+        context.clearRect(0, 0, canvas.width, canvas.height);
+        el_img.forEach(function (item, index) {
+
+            if (item.glow) {
+                context.shadowColor = "green";
+                context.shadowBlur = 10;
+            } else {
+                context.shadowBlur = 0;
+            }
+
+            // if (item.img == 'p6' || item.img == 'p7') {
+            if (item.img == element.img) {
+                context.save();
+                var adding_image = document.getElementById(item.img);
+                element.tx = 30;
+                element.ty = 0;
+
+                context.translate(element.x + 30, element.y);
+                context.rotate(angle);
+                context.translate(-element.x - 30, -element.y);
+                // context.translate(30, 0);
+                context.drawImage(adding_image, item.x, item.y);
+                // context.translate(30, 0);
+                context.restore()
+            }else{
+                var adding_image = document.getElementById(item.img);
+                context.drawImage(adding_image, item.x, item.y);
+            }
+        });
+        if (localFrames > 0)
+        // anim();
+            requestAnimationFrame(anim);
+        else
+            render_tick(10, 60, element.depends, element.animation, element, angle);
+    }
+
+    if (localFrames > 0) {
+        // anim();
+        requestAnimationFrame(anim);
+    } else {
+
+        // tick();
+    }
+}
+
 var animation_frames;
 
-function render_tick(animation_duration, frames, elements, type) {
+
+//-----------------------------------------------------------------
+//Render animation for each related element
+//-----------------------------------------------------------------
+
+function render_tick(animation_duration, frames, elements, type, select_element, select_el_angle) {
     // /translatey
-        
+    console.log("render" + new Date());
+    var main_frames=frames;
     // window.requestAnimationFrame()
 
     // setInterval(
 
     function step() {
-        
+
         frames--;
 
         // if (frames < 0) {
@@ -98,6 +168,8 @@ function render_tick(animation_duration, frames, elements, type) {
 
         el_img.forEach(function (item, index) {
 
+            var adding_image = document.getElementById(item.img);
+
             if (item.glow) {
                 context.shadowColor = "yellow";
                 context.shadowBlur = 15;
@@ -105,34 +177,88 @@ function render_tick(animation_duration, frames, elements, type) {
                 context.shadowBlur = 0;
             }
 
+
+
             if (elements.indexOf(item.img) >= 0) {
-                context.shadowColor = "red";
-                context.shadowBlur = 15;
+                // context.shadowColor = "red";
+                // context.shadowBlur = 15;
+
 
                 if (type == 'translatey') {
+
 
                     context.save();
                     var angle = Math.sin((Math.PI * (frames * 3)) / 180) * (-1);
                     // console.log(angle);
-                    context.translate(0, angle * 15+5);
+                    context.translate(0, angle * 15 + 5);
 
-                    var adding_image = document.getElementById(item.img);
-                    context.drawImage(adding_image, item.x, item.y);
+                    // var adding_image = document.getElementById(item.img);
+
+                    if (item.img == select_element.img) {
+                        context.translate(select_element.x + select_element.tx, select_element.y);
+                        context.rotate(select_el_angle);
+                        context.translate(-select_element.x - select_element.tx, -select_element.y);
+                        // context.translate(30, 0);
+                        context.drawImage(adding_image, item.x, item.y);
+                        // context.drawImage(adding_image, item.x, item.y);
+                    } else {
+                        context.drawImage(adding_image, item.x, item.y);
+                    }
 
                     context.restore();
                 } else if (type == "rotate") {
                     context.save();
+
+                    // context.drawImage(adding_image, item.x, item.y);
+
+                    // context.drawImage(adding_image, item.x, item.y);
+                    // console.log(select_element);
+                    if (item.img == select_element.img) {
+                        // context.translate(select_element.x + select_element.tx, select_element.y);
+                        // context.rotate(select_el_angle);
+                        // context.translate(-select_element.x - select_element.tx, -select_element.y);
+                        // context.translate(30, 0);
+                        // context.drawImage(adding_image, item.x, item.y);
+                        // context.drawImage(adding_image, item.x, item.y);
+                    } else {
+                        // var angle = Math.sin((Math.PI * (frames * 3)) / 180) * (-1);
+                        var angle=0;
+                        if(main_frames/2-frames<0) {
+                            angle = (frames / 4) * Math.PI / 180-20*Math.PI/180;
+                        }else{
+                            // angle = 1*(frames / 4) * Math.PI / 180+5*Math.PI/180;
+                        }
+                        // console.log(angle);
+                        // context.translate(0, angle * 20);
+                        var adding_image = document.getElementById(item.img);
+
+                        context.translate(item.x+50, canvas.height / 2);
+                        // context.rotate(-0.2 * Math.cos((-frames) * Math.PI / 180));
+                        context.rotate(angle);
+                        context.translate(-item.x-50, -canvas.height / 2);
+
+                        context.drawImage(adding_image, item.x, item.y);
+                    }
+
+                    context.restore();
+                } else if(type="translatex"){
+                    context.save();
                     var angle = Math.sin((Math.PI * (frames * 3)) / 180) * (-1);
                     // console.log(angle);
-                    // context.translate(0, angle * 20);
+                    context.translate(angle * 15 + 5, 0);
+
                     var adding_image = document.getElementById(item.img);
 
-                    context.translate(canvas.width / 2, canvas.height / 2);
-                    context.rotate(-0.2 * Math.cos((-frames) * Math.PI / 180));
-                    context.translate(-canvas.width / 2, -canvas.height / 2);
-
-                    context.drawImage(adding_image, item.x, item.y);
-
+                    if (item.img == select_element.img) {
+                        context.translate(select_element.x + select_element.tx, select_element.y);
+                        context.rotate(select_el_angle);
+                        context.translate(-select_element.x - select_element.tx, -select_element.y);
+                        // context.translate(30, 0);
+                        context.drawImage(adding_image, item.x, item.y);
+                        context.drawImage(adding_image, item.x, item.y);
+                    } else {
+                        context.drawImage(adding_image, item.x, item.y);
+                    }
 
                     context.restore();
                 }
@@ -142,7 +268,20 @@ function render_tick(animation_duration, frames, elements, type) {
 
 
                 var adding_image = document.getElementById(item.img);
-                context.drawImage(adding_image, item.x, item.y);
+
+                if(type=="rotate" && item.img == select_element.img) {
+                    context.save();
+                    if (item.img == select_element.img) {
+                        context.translate(select_element.x + select_element.tx, select_element.y);
+                        context.rotate(select_el_angle);
+                        context.translate(-select_element.x - select_element.tx, -select_element.y);
+                        // context.translate(30, 0);
+                        // context.drawImage(adding_image, item.x, item.y);
+                        context.drawImage(adding_image, item.x, item.y);
+                    }
+                    context.restore();
+                }else
+                    context.drawImage(adding_image, item.x, item.y);
             }
 
             // console.log(item.img);
@@ -165,14 +304,16 @@ function render_tick(animation_duration, frames, elements, type) {
             // step();
             requestAnimationFrame(step);
             // requestAnimationFrame(step);
+        }else{
+            tick();
         }
     };
 
-    if (frames > 0) {
-        step();
-        // requestAnimationFrame(step);
-    }else
-        tick();
+    // if (frames > 0) {
+    //     step();
+        requestAnimationFrame(step);
+    // } else
+    //     tick();
 }
 
 function getMousePos(canvas, e) {
@@ -246,7 +387,7 @@ var el_img = [];
 
 color = 50;
 
-function addImage(image, x=0, y=0, mask, animation, step, depends) {
+function addImage(image, x=0, y=0, mask, animation, step, depends, time) {
 
     var info = {
         img: image,
@@ -255,7 +396,8 @@ function addImage(image, x=0, y=0, mask, animation, step, depends) {
         color: color,
         animation: animation,
         step: step,
-        depends: depends
+        depends: depends,
+        time:time
     };
 
     el_img.push(info);
@@ -305,12 +447,17 @@ function addImage(image, x=0, y=0, mask, animation, step, depends) {
 }
 
 function pre_render() {
-    addImage('p1', 60, 10);
+    addImage('p1', 60, 5);//спинка
     addImage('p5', 40, 180);
     addImage('p3', 50, 130);
-    addImage('p2', 50, 170, '', 'rotate', '20', ['p1', 'p3', 'p2', 'p4']);
+    addImage('p2', 85, 185, '', 'rotate', '20', ['p1', 'p3', 'p2', 'p4'], 60);
     // addImage('p2', 50, 170, 'mask1');
-    addImage('p4', 182, 167, '', 'translatey', '20', ['p1', 'p3', 'p2', 'p4']);
+    addImage('p4', 185, 166, '', 'translatex', '20', ['p3', 'p4'], 60);
+
+
+    addImage('p6', 72, 187, '', 'translatey', '20', ['p1', 'p3', 'p2', 'p4', 'p6', 'p7'], 60);
+
+    addImage('p7', 60, 175, '', 'rotate', '20', ['p1'], 40);
 
 }
 
