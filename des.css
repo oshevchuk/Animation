@@ -8,3 +8,7 @@ body{
     float: left;
     margin-right: 15px;
 }
+
+.container{
+    margin-left: 100px;
+}

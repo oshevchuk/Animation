@@ -3,19 +3,21 @@
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
+    <!--[if IE]><script type="text/javascript" src="excanvas.js"></script><![endif]-->
     <link rel="stylesheet" href="des.css">
 </head>
 <body>
 
-<div class="main">
-    <canvas id="myCanvas" width="230" height="325">
-    </canvas>
-    <canvas id="mask" width="230" height="325"></canvas>
-
+<div class="container">
+    <div class="main">
+        <canvas id="myCanvas" width="230" height="325">
+        </canvas>
+        <canvas id="mask" width="230" height="325"></canvas>
+    </div>
 </div>
 
 <div class="hiden">
-  p1  <img src="items/item1/p1.png" alt="" id="p1">
+    p1 <img src="items/item1/p1.png" alt="" id="p1">
     p2<img src="items/item1/p2.png" alt="" id="p2">
     p3<img src="items/item1/p3.png" alt="" id="p3">
     p4<img src="items/item1/p4.png" alt="" id="p4">
@@ -29,6 +31,6 @@
 <!--okd-->
 
 
-<script src="script.js"></script>
+<script defer src="script.js"></script>
 </body>
 </html>
