@@ -3,15 +3,61 @@
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
-    <!--[if IE]><script type="text/javascript" src="excanvas.js"></script><![endif]-->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+    <script src="jquery-3.2.1.min.js"></script>
+    <!--[if IE]>
+    <script type="text/javascript" src="excanvas.js"></script><![endif]-->
     <link rel="stylesheet" href="css/des.css">
 </head>
 <body>
 
 <div class="container">
     <div class="main">
-        <canvas id="myCanvas" width="230" height="325">
-        </canvas>
+        <div class="alert">
+            Select a control on the chair below or an adjustment from the listing to see control function.
+            Select (info) to see written adjustment instructions, features and benefits.
+            <b>Note:</b> All chair/arm animations shown are approximate representations; your actual chair/arm may vary
+            significantly in features and appearance.
+        </div>
+        <div class="row">
+            <div class="show">
+                <canvas id="myCanvas" width="230" height="325">
+                </canvas>
+                <span class="message">Controls</span>
+            </div>
+            <div class="actions">
+                <div class="title">
+                    Adjustments
+                </div>
+                <table class="action-list">
+                    <tr>
+                        <td>1</td>
+                        <td><a class="link-action" data-action="p4">Action 1</a></td>
+                        <td><a href=""><i class="fa fa-info-circle" aria-hidden="true"></i></a></td>
+                    </tr>
+                    <tr>
+                        <td>2</td>
+                        <td><a class="link-action" data-action="p2">Action 2</a></td>
+                        <td><a href=""><i class="fa fa-info-circle" aria-hidden="true"></i></a></td>
+                    </tr>
+                    <tr>
+                        <td>3</td>
+                        <td><a class="link-action" data-action="p6">Action 3</a></td>
+                        <td><a href=""><i class="fa fa-info-circle" aria-hidden="true"></i></a></td>
+                    </tr>
+                    <tr>
+                        <td>4</td>
+                        <td><a class="link-action" data-action="p7">Action 4</a></td>
+                        <td><a href=""><i class="fa fa-info-circle" aria-hidden="true"></i></a></td>
+                    </tr>
+                    <tr><td></td><td></td><td></td></tr>
+                    <tr><td></td><td></td><td></td></tr>
+                    <tr><td></td><td></td><td></td></tr>
+                    <tr><td></td><td></td><td></td></tr>
+                </table>
+
+            </div>
+        </div>
         <canvas id="mask" width="230" height="325" class="hiden"></canvas>
     </div>
 </div>

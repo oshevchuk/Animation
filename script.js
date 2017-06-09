@@ -36,6 +36,53 @@ canvas.addEventListener('mousemove', function (e) {
     tick();
 }, false);
 
+$('.link-action').on('mousemove', function (e) {
+    var self=this;
+    el_img.forEach(function (item, index) {
+        item.glow = false;
+        if (item.img == $(self).data('action')) {
+            item.glow = true;
+            // if (item.animation) {
+            //     anim = true;
+            //     if (item.img == 'p6' || item.img == 'p7')
+            //         animate_bone(item);
+            //     else
+            //         render_tick(10, item.time, item.depends, item.animation, '', '');
+            // }
+            // console.log(item);
+
+            // return true;
+
+        }
+    });
+    // tick();
+    if (!anim)
+        tick();
+});
+var anim = false;
+$('.link-action').on('click', function (e) {
+    var self=this;
+    el_img.forEach(function (item, index) {
+        item.glow = false;
+        if (item.img == $(self).data('action')) {
+            item.glow = true;
+            if (item.animation) {
+                anim = true;
+                if (item.img == 'p6' || item.img == 'p7')
+                    animate_bone(item);
+                else
+                    render_tick(10, item.time, item.depends, item.animation, '', '');
+            }
+            // console.log(item);
+
+            // return true;
+
+        }
+    });
+    // tick();
+    if (!anim)
+        tick();
+});
 
 //------------------------------------------------------------------------------
 //get selected element from mask and do animation
@@ -201,6 +248,7 @@ function render_tick(animation_duration, frames, elements, type, select_element,
         if (frames > 0) {
             requestAnimationFrame(step);
         } else {
+
             tick();
         }
     };
@@ -297,5 +345,6 @@ function tick(e) {
         var adding_image = document.getElementById(item.img);
         context.drawImage(adding_image, item.x, item.y);
     });
+    anim=false;
 };
 
