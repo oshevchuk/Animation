@@ -21,44 +21,50 @@ document.addEventListener("DOMContentLoaded", function (e) {
 //when mouse move on canvas set glow effect on hover element
 //------------------------------------------------------------------------------
 canvas.addEventListener('mousemove', function (e) {
-    var mousePos = getMousePos(canvas, e);
-    // writeMessage(canvas, 'pos: '+mousePos.x+":"+mousePos.y);
-    // console.log(mousePos);
-    var x = mousePos.x;// e.layerX;
-    var y = mousePos.y;// e.layerY;
-    var pixel = context_mask.getImageData(x, y, 1, 1);
-    el_img.forEach(function (item, index) {
-        item.glow = false;
-        if (item.color == pixel.data[0]) {
-            item.glow = true;
-        }
-    });
-    tick();
+    if(!freez) {
+        var mousePos = getMousePos(canvas, e);
+        // writeMessage(canvas, 'pos: '+mousePos.x+":"+mousePos.y);
+        // console.log(mousePos);
+        var x = mousePos.x;// e.layerX;
+        var y = mousePos.y;// e.layerY;
+        var pixel = context_mask.getImageData(x, y, 1, 1);
+        el_img.forEach(function (item, index) {
+            item.glow = false;
+            if (item.color == pixel.data[0] && item.animation) {
+                item.glow = true;
+            }
+        });
+        tick();
+    }
 }, false);
 
 $('.link-action').on('mousemove', function (e) {
-    var self=this;
-    el_img.forEach(function (item, index) {
-        item.glow = false;
-        if (item.img == $(self).data('action')) {
-            item.glow = true;
-            // if (item.animation) {
-            //     anim = true;
-            //     if (item.img == 'p6' || item.img == 'p7')
-            //         animate_bone(item);
-            //     else
-            //         render_tick(10, item.time, item.depends, item.animation, '', '');
-            // }
-            // console.log(item);
+    if(!freez) {
 
-            // return true;
+        var self = this;
+        el_img.forEach(function (item, index) {
+            item.glow = false;
+            if (item.img == $(self).data('action')) {
+                item.glow = true;
+                // if (item.animation) {
+                //     anim = true;
+                //     if (item.img == 'p6' || item.img == 'p7')
+                //         animate_bone(item);
+                //     else
+                //         render_tick(10, item.time, item.depends, item.animation, '', '');
+                // }
+                // console.log(item);
 
-        }
-    });
-    // tick();
-    if (!anim)
-        tick();
+                // return true;
+
+            }
+        });
+        // tick();
+        if (!anim)
+            tick();
+    }
 });
+
 var anim = false;
 $('.link-action').on('click', function (e) {
     var self=this;
@@ -68,9 +74,10 @@ $('.link-action').on('click', function (e) {
             item.glow = true;
             if (item.animation) {
                 anim = true;
-                if (item.img == 'p6' || item.img == 'p7')
+                if (item.img == 'p6' || item.img == 'p7') {
+                    item.glow = true;
                     animate_bone(item);
-                else
+                }else
                     render_tick(10, item.time, item.depends, item.animation, '', '');
             }
             // console.log(item);
@@ -83,6 +90,22 @@ $('.link-action').on('click', function (e) {
     if (!anim)
         tick();
 });
+
+//------------------------------------------------------------------------------
+//In Action list prenn on the info icon 
+//------------------------------------------------------------------------------
+
+$('.info-action').on('click', function (e) {
+    $('.modal').fadeIn(400);
+    var selected_act=$(this).data('actioni');
+    $('.variant').hide();
+    $('#'+selected_act).show();
+});
+
+$('.close').on('click', function (e) {
+    $('.modal').fadeOut(400);
+});
+
 
 //------------------------------------------------------------------------------
 //get selected element from mask and do animation
@@ -119,11 +142,13 @@ function getMousePos(canvas, e) {
     };
 }
 
+var freez=false;
 //------------------------------------------------------------------------------
 //animate bone before Main animation + delay
 //localFrames - frames to animate bone (one time to all bones)
 //------------------------------------------------------------------------------
 function animate_bone(element) {
+    freez=true;
     var localFrames = 12;
 
     function anim() {
@@ -134,10 +159,11 @@ function animate_bone(element) {
         el_img.forEach(function (item, index) {
             var adding_image = document.getElementById(item.img);
             if (item.glow) {
-                context.shadowColor = "green";
-                context.shadowBlur = 10;
+                // context.shadowColor = "green";
+                adding_image=item.blu;
+                // context.shadowBlur = 10;
             } else {
-                context.shadowBlur = 0;
+                // context.shadowBlur = 0;
             }
 
             if (item.img == element.img) {
@@ -147,16 +173,30 @@ function animate_bone(element) {
                 context.translate(element.x + 30, element.y);
                 context.rotate(angle);
                 context.translate(-element.x - 30, -element.y);
-                context.drawImage(adding_image, item.x, item.y);
+
+                // if (item.glow) {
+                //     context.drawImage(item.blu, item.x, item.y);
+                // }else {
+                //     context.drawImage(adding_image, item.x, item.y);
+                    context.drawImage(item.blu, item.x, item.y);
+                // }
+
                 context.restore()
             } else {
-                context.drawImage(adding_image, item.x, item.y);
+                // context.drawImage(adding_image, item.x, item.y);
+                // if (item.glow) {
+                //     context.drawImage(item.blu, item.x, item.y);
+                // }else {
+                    context.drawImage(adding_image, item.x, item.y);
+                // }
             }
         });
         if (localFrames > 0)
             requestAnimationFrame(anim);
-        else
+        else {
+            // freez=false;
             render_tick(10, 60, element.depends, element.animation, element, angle);
+        }
     }
 
     requestAnimationFrame(anim);
@@ -177,10 +217,11 @@ function render_tick(animation_duration, frames, elements, type, select_element,
             var adding_image = document.getElementById(item.img);
 
             if (item.glow) {
-                context.shadowColor = "yellow";
-                context.shadowBlur = 15;
+                // context.shadowColor = "yellow";
+                // context.shadowBlur = 15;
+                adding_image=item.blu;
             } else {
-                context.shadowBlur = 0;
+                // context.shadowBlur = 0;
             }
 
             if (elements.indexOf(item.img) >= 0) {
@@ -193,6 +234,7 @@ function render_tick(animation_duration, frames, elements, type, select_element,
                         context.rotate(select_el_angle);
                         context.translate(-select_element.x - select_element.tx, -select_element.y);
                         context.drawImage(adding_image, item.x, item.y);
+                        // context.drawImage(item.blu, item.x, item.y);
                     } else {
                         context.drawImage(adding_image, item.x, item.y);
                     }
@@ -206,7 +248,7 @@ function render_tick(animation_duration, frames, elements, type, select_element,
                         } else {
                             angle = -1 * (frames / 6) * Math.PI / 180 + 0 * Math.PI / 180;
                         }
-                        var adding_image = document.getElementById(item.img);
+                        // var adding_image = document.getElementById(item.img);
                         context.translate(item.x + 50, canvas.height / 2);
                         context.rotate(angle);
                         context.translate(-item.x - 50, -canvas.height / 2);
@@ -217,7 +259,7 @@ function render_tick(animation_duration, frames, elements, type, select_element,
                     context.save();
                     var angle = Math.sin((Math.PI * (frames * 3)) / 180) * (-1);
                     context.translate(angle * 15 + 5, 0);
-                    var adding_image = document.getElementById(item.img);
+                    // var adding_image = document.getElementById(item.img);
                     if (item.img == select_element.img) {
                         context.translate(select_element.x + select_element.tx, select_element.y);
                         context.rotate(select_el_angle);
@@ -231,7 +273,7 @@ function render_tick(animation_duration, frames, elements, type, select_element,
                 }
             } else {
                 context.shadowBlur = 0;
-                var adding_image = document.getElementById(item.img);
+                // var adding_image = document.getElementById(item.img);
                 if (type == "rotate" && item.img == select_element.img) {
                     context.save();
                     if (item.img == select_element.img) {
@@ -248,7 +290,7 @@ function render_tick(animation_duration, frames, elements, type, select_element,
         if (frames > 0) {
             requestAnimationFrame(step);
         } else {
-
+            freez=false;
             tick();
         }
     };
@@ -282,9 +324,10 @@ function addImage(image, x, y, mask, animation, step, depends, time) {
         animation: animation,
         step: step,
         depends: depends,
-        time: time
+        time: time,
+        blu:''
     };
-    el_img.push(info);
+    // el_img.push(info);
     var adding_image = document.getElementById(image);
     var add_mask;
     if (mask) {
@@ -298,15 +341,32 @@ function addImage(image, x, y, mask, animation, step, depends, time) {
     tmp_context1.height = adding_image.height;
     tmp_context1.drawImage(adding_image, 0, 0);//,  adding_image.width*scale, adding_image.height*scale );
     var myData = tmp_context1.getImageData(0, 0, adding_image.width, adding_image.height);
+    var myDataCopy = tmp_context1.getImageData(0, 0, adding_image.width, adding_image.height);
 
     for (var i = 0; i < myData.data.length; i += 4) {
-        if (myData.data[i] != 0) {
+        if ((myData.data[i+3] != 0)) {
             myData.data[i] = color;
             myData.data[i + 1] = color;
             myData.data[i + 2] = color;
+
+            myDataCopy.data[i] = 0;
+            myDataCopy.data[i + 1] = 175;
+            myDataCopy.data[i + 2] = 217;
         }
     }
     color += 20;
+
+    var canvas_blu = document.createElement('canvas');
+    var ctx_blu = canvas_blu.getContext('2d');
+    canvas_blu.width = myDataCopy.width;
+    canvas_blu.height = myDataCopy.height;
+    ctx_blu.putImageData(myDataCopy, 0, 0);
+    var image = new Image();
+    image.src = canvas_blu.toDataURL();
+    info.blu=image;
+    // info.blu=myDataCopy;
+
+    el_img.push(info);
 
     tmp_context1.putImageData(myData, 0, 0);
     if (!mask) {
@@ -326,7 +386,7 @@ function init_Scene() {
     addImage('p2', 85, 185, '', 'rotate', '20', ['p1', 'p3', 'p2', 'p4', 'p6', 'p7'], 60);
     // addImage('p2', 50, 170, 'mask1');
     addImage('p4', 185, 166, '', 'translatex', '20', ['p3', 'p4'], 60);
-    addImage('p6', 72, 187, '', 'translatey', '20', ['p1', 'p3', 'p2', 'p4', 'p6', 'p7'], 60);
+    addImage('p6', 72, 185, '', 'translatey', '20', ['p1', 'p3', 'p2', 'p4', 'p6', 'p7'], 60);
     addImage('p7', 60, 175, '', 'rotate', '20', ['p1'], 40);
 }
 
@@ -336,14 +396,43 @@ function init_Scene() {
 function tick(e) {
     context.clearRect(0, 0, canvas.width, canvas.height);
     el_img.forEach(function (item, index) {
+        var adding_image = document.getElementById(item.img);
         if (item.glow) {
-            context.shadowColor = "green";
-            context.shadowBlur = 10;
+            // context.shadowColor = "green";
+
+            // var myData = tmp_context1.getImageData(0, 0, adding_image.width, adding_image.height);
+            //
+            // for (var i = 0; i < myData.data.length; i += 4) {
+            //     if (myData.data[i] != 0) {
+            //         myData.data[i] = color;
+            //         myData.data[i + 1] = color;
+            //         myData.data[i + 2] = color;
+            //     }
+            // }
+
+            // var image = new Image();
+            // image.src=item.blu.data;
+            //
+            context.drawImage(item.blu, item.x, item.y);
+
+            // context.save();
+            // context.globalCompositeOperation = 'source-over';
+
+            // context.putImageData(item.blu, item.x, item.y);
+            // context.restore();
+            // context.globalCompositeOperation='source-atop';
+            // context.fillStyle="blue";
+            // context.shadowBlur = 10;
+            // ctx.fillRect(0,0,canvas.width,canvas.height);
+
+            // context.globalCompositeOperation='source-over';
+
         } else {
             context.shadowBlur = 0;
+            context.drawImage(adding_image, item.x, item.y);
         }
-        var adding_image = document.getElementById(item.img);
-        context.drawImage(adding_image, item.x, item.y);
+        // var adding_image = document.getElementById(item.img);
+        // context.drawImage(adding_image, item.x, item.y);
     });
     anim=false;
 };

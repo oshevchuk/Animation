@@ -1,6 +1,8 @@
 body{
   background-color: rgba(50,50,50,0.3);
+  font-family: 'Raleway', sans-serif;
 }
+
 
 .hiden{
   display: none;
@@ -15,9 +17,9 @@ body{
   margin: auto;
   margin-bottom: 15px;
   color: rgb(102,102,102);
-  font-family: Arial;
+
   text-align: justify;
-  font-size: 0.9em;
+  font-size: 14px;
 }
 
 .main{
@@ -37,27 +39,53 @@ body{
 
   .message{
     position: absolute;
-    color: gray;
-    bottom: 10px;
-    right: 10px;
-    text-transform: capitalize;
-    font-size: 16px;
+    color: rgb(180,180,180);
+    bottom: 20px;
+    right: 5px;
+    text-transform: uppercase;
+    font-family: "Arial Unicode MS";
+    font-size: 12px;
+    letter-spacing: 0.3px;
   }
 }
 
 .row{
   display: flex;
-  justify-content: space-between;
-  margin-right: 15px;
+  //justify-content: space-between;
+  //margin-right: 15px;
+  width: 470px;
+  height: 370px;
+  align-items: flex-end;
+  position: relative;
 
+
+
+  .mes-info{
+    font-family: "Helvetica Condensed Black";
+    color: rgb(60,60,60);
+    font-size: 14px;
+    letter-spacing: 0.3px;
+    display: block;
+    width: 200px;
+    margin: 10px;
+    text-align: right;
+    color: rgb(110,110,110);
+  }
 
   .actions{
-    width: 220px;
+    width: 190px;
     border: 1px solid rgba(100,100,100,0.5);
-    box-shadow: 1px 1px 7px rgba(100,100,100,0.8);
+    box-shadow: 1px 0px 5px rgba(100,100,100,0.8);
     border-radius: 10px;
     max-height: 200px;
     background: linear-gradient(to top, rgb(215, 216, 218),  rgb(248,248,248));
+    border-top: none;
+    margin: 15px;
+    font-family: "Helvetica Condensed Black";
+    color: rgb(60,60,60);
+    font-size: 14px;
+    letter-spacing: 0.3px;
+
 
     .title{
       text-transform: uppercase;
@@ -65,14 +93,21 @@ body{
       text-align: center;
       background-color: rgb(102, 180, 35);
       border-radius: 5px 5px 0px 0px;
-      font-family: Arial;
-      font-size: 0.8em;
-      line-height: 1.5em;
+      //font-family: Arial;
+      //font-size: 0.8em;
+      //line-height: 1.5em;
+      box-shadow: 0 -2px 2px rgb(102, 180, 35);
+      font-size: 11px;
+      line-height: 14px;
+      text-shadow: 0 0 2px white;
+      letter-spacing: 1px;
     }
 
     .action-list{
       width: 100%;
       border-collapse: collapse;
+
+
 
       .link-action{
         cursor: pointer;
@@ -94,12 +129,116 @@ body{
           color: rgb(190,190,190);
         }
         a i:hover{
-          color: blue;
+          color: rgb(0, 175, 215);
+        }
+        a:hover{
+          //color: rgb(200, 200, 200);
         }
       }
       tr:hover{
-        background-color: rgb(0, 175, 217);
+        //background-color: rgb(0, 175, 217);
+        //  color: (200, 200, 200);
+        color: rgb(200, 200, 200);
+      }
+    }
+  }
+
+  .modal{
+    box-sizing: content-box;
+    border: 1px solid rgb(220,220,220);
+    border-top: none;
+    position: absolute;
+    top:5%;
+    left: 5%;
+    width: 90%;
+    height: 87%;
+    background-color: rgba(250,250,250,0.6);
+    border-radius: 6px;
+    display: none;
+    //font-family: "Helvetica Condensed Black";
+
+    .modal-head{
+      width: calc(100% + 2px );
+      text-align: center;
+      background-color: #00b0da;
+      color: white;
+      text-shadow: 0px 0px 2px white;
+      border-radius: 6px 6px 0 0;
+      text-transform: uppercase;
+      font-size: 12px;
+      letter-spacing: 0.4px;
+      margin-left: -1px;
+    }
+
+    .close{
+      float: right;
+      //font-family: "Helvetica Condensed Black";
+      text-transform: uppercase;
+      font-size: 11px;
+      letter-spacing: 0.4px;
+      color: rgb(180,180,180);
+      cursor: pointer;
+      margin:9px;
+      margin-top: 6px;
+
+      &:hover{
+        color: #00afd7;
+      }
+
+      span{
+        vertical-align: middle;
+        display: block;
+        float: right;
+        width: 10px;
+        height: 10px;
+        //content: 'X';
+        border: 1px solid currentColor;
+        margin-top: 1px;
+        margin-left: 5px;
+      }
+      span:after{
+        width: 14px;
+        content: '';
+        transform: rotate(45deg);
+        border-top: 1px solid currentColor;
+        transform-origin: 1px 0px;
+        position: absolute;
+      }
+      span:before{
+        width: 14px;
+        content: '';
+        transform: rotate(-45deg);
+        border-top: 1px solid currentColor;
+        transform-origin: 12px 6px;
+        position: absolute;
+      }
+    }
+
+    .modal-content{
+      border: 1px solid rgb(180,180,180);;
+      height: 80%;
+      margin-top: 25px;
+
+      margin-left: 8px;
+      margin-right: 8px;
+      //margin-bottom: 10px;
+      border-radius: 6px;
+      background-color: white;
+      font-family: "Helvetica Condensed Black";
+      padding: 8px;
+      padding-left: 15px;
+      padding-right: 15px;
+      font-size: 14px;
+
+      .variant{
+        display: none;
+      }
+
+      div {
+        height: 100%;
+        overflow-y: scroll;
       }
     }
   }
 }
+
