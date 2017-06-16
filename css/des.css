@@ -1,3 +1,7 @@
+@font-face {
+  font-family: OstrichSans-Medium;
+  src: url("fonts/OstrichSans-Medium.otf") format("opentype"); }
+
 body {
   background-color: rgba(50, 50, 50, 0.3);
   font-family: 'Raleway', sans-serif; }
@@ -36,9 +40,10 @@ body {
     bottom: 20px;
     right: 5px;
     text-transform: uppercase;
-    font-family: "Arial Unicode MS";
-    font-size: 12px;
-    letter-spacing: 0.3px; }
+    font-family: OstrichSans-Medium;
+    font-size: 14px;
+    letter-spacing: 0.5px;
+    transform: scaleY(0.7) scaleX(1.5); }
 
 .row {
   display: flex;
@@ -47,15 +52,12 @@ body {
   align-items: flex-end;
   position: relative; }
   .row .mes-info {
-    font-family: "Helvetica Condensed Black";
-    color: #3c3c3c;
-    font-size: 14px;
+    font-size: 12px;
     letter-spacing: 0.3px;
     display: block;
     width: 200px;
     margin: 10px;
-    text-align: right;
-    color: #6e6e6e; }
+    text-align: right; }
   .row .actions {
     width: 190px;
     border: 1px solid rgba(100, 100, 100, 0.5);
@@ -65,10 +67,9 @@ body {
     background: linear-gradient(to top, #d7d8da, #f8f8f8);
     border-top: none;
     margin: 15px;
-    font-family: "Helvetica Condensed Black";
     color: #3c3c3c;
-    font-size: 14px;
-    letter-spacing: 0.3px; }
+    font-size: 12px;
+    font-weight: 600; }
     .row .actions .title {
       text-transform: uppercase;
       color: white;
