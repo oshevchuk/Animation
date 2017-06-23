@@ -14,7 +14,8 @@ var context_mask = canvas_mask.getContext('2d');
 
 //------------------------------------------------------------------------------
 document.addEventListener("DOMContentLoaded", function (e) {
-    init_Scene();
+    setTimeout(init_Scene, 200);
+
 }, false);
 
 //------------------------------------------------------------------------------
